@@ -39,3 +39,8 @@ func TestLookupTXT(t *testing.T) {
 	assert.Equal(t, "mail.cymbal.co", records[0].Name)
 	assert.Equal(t, "v=spf1 include:amazonses.com ~all", records[0].Value)
 }
+
+func TestNoSuchHost(t *testing.T) {
+	_, err := Lookup("CNAME", "nonexistent.cymbal.co")
+	assert.ErrorIs(t, err, ErrNoSuchHost)
+}

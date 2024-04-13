@@ -3,6 +3,7 @@ package dnslookup
 import (
 	"errors"
 	"net"
+	"strings"
 )
 
 type (
@@ -15,6 +16,7 @@ type (
 
 var (
 	ErrInvalidRecordType = errors.New("invalid record type")
+	ErrNoSuchHost        = errors.New("no such host")
 )
 
 func Lookup(recordType string, domain string) ([]Record, error) {
@@ -22,7 +24,7 @@ func Lookup(recordType string, domain string) ([]Record, error) {
 	case "CNAME":
 		result, err := net.LookupCNAME(domain)
 		if err != nil {
-			return nil, err
+			return nil, handleError(err)
 		}
 
 		return []Record{{
@@ -33,7 +35,7 @@ func Lookup(recordType string, domain string) ([]Record, error) {
 	case "MX":
 		records, err := net.LookupMX(domain)
 		if err != nil {
-			return nil, err
+			return nil, handleError(err)
 		}
 
 		var result []Record
@@ -50,7 +52,7 @@ func Lookup(recordType string, domain string) ([]Record, error) {
 	case "TXT":
 		records, err := net.LookupTXT(domain)
 		if err != nil {
-			return nil, err
+			return nil, handleError(err)
 		}
 
 		var result []Record
@@ -65,4 +67,12 @@ func Lookup(recordType string, domain string) ([]Record, error) {
 	}
 
 	return nil, ErrInvalidRecordType
+}
+
+func handleError(err error) error {
+	if strings.Contains(err.Error(), "no such host") {
+		return ErrNoSuchHost
+	}
+
+	return err
 }
