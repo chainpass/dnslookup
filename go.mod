@@ -1,4 +1,4 @@
-module github.com/hypnobrando/dnslookup
+module github.com/chainpass/dnslookup
 
 go 1.21.0
 
