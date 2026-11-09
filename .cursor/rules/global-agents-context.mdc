@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+
+# Global agents context
+
+Before any tool call or edit, read `/agent/repos/agents/AGENTS.md` and follow it. If that file is not there, read `AGENTS.md` on `github.com/chainpass/agents` (`main`).
+
+That file is the router for every Cymbal repo. Read it, then only the skills and docs it names for this task. Do not commit, push, or open a pull request until you have read it.
